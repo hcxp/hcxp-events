@@ -20,7 +20,7 @@ RUN mkdir -p /app
 WORKDIR /app
 
 COPY Gemfile Gemfile.lock ./
-RUN gem install bundler && bundle install --without production --jobs 20 --retry 5
+RUN gem install bundler && bundle install --without development test --jobs 20 --retry 5
 
 COPY . ./
 RUN rails assets:precompile
