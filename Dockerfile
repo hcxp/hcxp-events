@@ -23,6 +23,7 @@ COPY Gemfile Gemfile.lock ./
 RUN gem install bundler && bundle install --without production --jobs 20 --retry 5
 
 COPY . ./
+RUN rails assets:precompile
 
 EXPOSE 3000
 
