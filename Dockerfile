@@ -16,6 +16,8 @@ RUN apk --update --upgrade add \
   file-dev \
   && rm -rf /var/cache/apk/*
 
+ENV RAILS_ENV production
+
 RUN mkdir -p /app
 WORKDIR /app
 
@@ -23,7 +25,7 @@ COPY Gemfile Gemfile.lock ./
 RUN gem install bundler && bundle install --without development test --jobs 20 --retry 5
 
 COPY . ./
-RUN rails assets:precompile
+RUN DATABASE_URL=postgresql://fake:5432/fake rails assets:precompile
 
 EXPOSE 3000
 
