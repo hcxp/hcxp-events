@@ -1,0 +1,34 @@
+version: '2'
+
+services:
+  db:
+    restart: always
+    image: postgres:9.6-alpine
+    networks:
+      - internal_network
+    volumes:
+      - /var/lib/postgresql/data
+
+  web:
+    build: .
+    image: hcxp/hcxp-events
+    restart: always
+    # env_file: .env.production
+    command: bash -c "rm -f /prismo/tmp/pids/server.pid; bundle exec rails s -p 3000 -b '0.0.0.0'"
+    networks:
+      - external_network
+      - internal_network
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      - db
+      # - redis
+    volumes:
+      # - ./public/assets:/prismo/public/assets
+      # - ./public/packs:/prismo/public/packs
+      - /prismo/public/uploads
+
+networks:
+  external_network:
+  internal_network:
+    internal: true
