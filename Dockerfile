@@ -31,7 +31,9 @@ COPY package.json yarn.lock ./
 RUN yarn install
 
 COPY . ./
-RUN DATABASE_URL=postgresql://fake:5432/fake rails assets:precompile
+RUN DATABASE_URL=postgresql://fake:5432/fake \
+  SECRET_KEY_BASE=abc123 \
+  rails assets:precompile
 
 EXPOSE 3000
 
